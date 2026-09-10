@@ -1,6 +1,3 @@
-კი, აი მთლიანად ერთ ბლოკად, პირდაპირ `README.md`-ში ჩასასმელად:
-
-````md
 <div align="center">
 
 # 🎓 Student Management System
@@ -143,7 +140,6 @@ PostgreSQL
      │
      ▼
  HTTP Response
-````
 
 Each layer has its own responsibility:
 
@@ -493,4 +489,3 @@ More features, UI improvements, security, and deployment support will be added p
 ⭐ If you find this project interesting, feel free to explore the source code.
 
 </div>
-```
