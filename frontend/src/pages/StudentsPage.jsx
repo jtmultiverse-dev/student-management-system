@@ -8,6 +8,9 @@ import {
 } from "../services/studentsApi.js";
 import StudentsList from "../components/StudentsList.jsx";
 import StudentForm from "../components/StudentForm.jsx";
+
+import { useForm } from "react-hook-form";
+
 const initialFormData = {
     firstName: "",
     lastName: "",
@@ -28,7 +31,15 @@ function StudentsPage() {
         error,
     } = useGetStudentsQuery();
 
-    const [formData, setFormData] = useState(initialFormData);
+    const {
+        control,
+        handleSubmit: handleFormSubmit,
+        reset,
+        watch,
+        formState: { errors },
+    } = useForm({
+        defaultValues: initialFormData,
+    });
     const [editingStudentId, setEditingStudentId] = useState(null);
 
     const [
@@ -62,22 +73,11 @@ function StudentsPage() {
     ] = useDeleteStudentMutation();
 
 
-    function handleChange(event) {
-        const { name, value } = event.target;
-
-        setFormData((previousData) => ({
-            ...previousData,
-            [name]: value,
-        }));
-    };
-
-    async function handleSubmit(event) {
-        event.preventDefault();
-
+    async function handleStudentSubmit(data) {
         const studentData = {
-            ...formData,
-            course: Number(formData.course),
-            facultyId: Number(formData.facultyId),
+            ...data,
+            course: Number(data.course),
+            facultyId: Number(data.facultyId),
         };
 
         try {
@@ -92,7 +92,7 @@ function StudentsPage() {
                 await createStudent(studentData).unwrap();
             }
 
-            setFormData(initialFormData);
+            reset(initialFormData);
         } catch (error) {
             console.error("Failed to save student:", error);
         }
@@ -101,7 +101,7 @@ function StudentsPage() {
     function handleEdit(student) {
         setEditingStudentId(student.id);
 
-        setFormData({
+        reset({
             firstName: student.firstName ?? "",
             lastName: student.lastName ?? "",
             email: student.email ?? "",
@@ -117,7 +117,7 @@ function StudentsPage() {
 
     function handleCancelEdit() {
         setEditingStudentId(null);
-        setFormData(initialFormData);
+        reset(initialFormData);
     }
 
     async function handleDelete(student) {
@@ -165,14 +165,13 @@ function StudentsPage() {
             <h1>Students</h1>
 
             <StudentForm
-                formData={formData}
+                control={control}
+                errors={errors}
                 faculties={faculties}
                 isEditing={isEditing}
                 isSaving={isSaving}
-                isUpdating={isUpdating}
                 isFacultiesLoading={isFacultiesLoading}
-                onChange={handleChange}
-                onSubmit={handleSubmit}
+                onSubmit={handleFormSubmit(handleStudentSubmit)}
                 onCancelEdit={handleCancelEdit}
             />
 

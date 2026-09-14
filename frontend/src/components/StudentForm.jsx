@@ -14,13 +14,15 @@ const labelStyle = {
     fontWeight: 500,
 };
 
+import { Controller } from "react-hook-form";
+
 function StudentForm({
-    formData,
+    control,
+    errors,
     faculties,
     isEditing,
     isSaving,
     isFacultiesLoading,
-    onChange,
     onSubmit,
     onCancelEdit,
 }) {
@@ -28,15 +30,6 @@ function StudentForm({
         value: String(faculty.id),
         label: faculty.name,
     }));
-
-    function handleFacultyChange(value) {
-        onChange({
-            target: {
-                name: "facultyId",
-                value: value ?? "",
-            },
-        });
-    }
 
     return (
         <Card
@@ -53,13 +46,16 @@ function StudentForm({
                             First name
                         </label>
 
-                        <Input
-                            id="firstName"
+                        <Controller
                             name="firstName"
-                            value={formData.firstName}
-                            onChange={onChange}
-                            placeholder="Enter first name"
-                            required
+                            control={control}
+                            render={({ field }) => (
+                                <Input
+                                    {...field}
+                                    id="firstName"
+                                    placeholder="Enter first name"
+                                />
+                            )}
                         />
                     </Col>
 
@@ -71,13 +67,16 @@ function StudentForm({
                             Last name
                         </label>
 
-                        <Input
-                            id="lastName"
+                        <Controller
                             name="lastName"
-                            value={formData.lastName}
-                            onChange={onChange}
-                            placeholder="Enter last name"
-                            required
+                            control={control}
+                            render={({ field }) => (
+                                <Input
+                                    {...field}
+                                    id="lastName"
+                                    placeholder="Enter last name"
+                                />
+                            )}
                         />
                     </Col>
 
@@ -89,14 +88,17 @@ function StudentForm({
                             Email
                         </label>
 
-                        <Input
-                            id="email"
+                        <Controller
                             name="email"
-                            type="email"
-                            value={formData.email}
-                            onChange={onChange}
-                            placeholder="student@example.com"
-                            required
+                            control={control}
+                            render={({ field }) => (
+                                <Input
+                                    {...field}
+                                    id="email"
+                                    type="email"
+                                    placeholder="student@example.com"
+                                />
+                            )}
                         />
                     </Col>
 
@@ -108,13 +110,16 @@ function StudentForm({
                             Student number
                         </label>
 
-                        <Input
-                            id="studentNumber"
+                        <Controller
                             name="studentNumber"
-                            value={formData.studentNumber}
-                            onChange={onChange}
-                            placeholder="STU-0001"
-                            required
+                            control={control}
+                            render={({ field }) => (
+                                <Input
+                                    {...field}
+                                    id="studentNumber"
+                                    placeholder="STU-0001"
+                                />
+                            )}
                         />
                     </Col>
 
@@ -126,15 +131,18 @@ function StudentForm({
                             Course
                         </label>
 
-                        <Input
-                            id="course"
+                        <Controller
                             name="course"
-                            type="number"
-                            min={1}
-                            value={formData.course}
-                            onChange={onChange}
-                            placeholder="Enter course"
-                            required
+                            control={control}
+                            render={({ field }) => (
+                                <Input
+                                    {...field}
+                                    id="course"
+                                    type="number"
+                                    min={1}
+                                    placeholder="Enter course"
+                                />
+                            )}
                         />
                     </Col>
 
@@ -146,13 +154,17 @@ function StudentForm({
                             Phone
                         </label>
 
-                        <Input
-                            id="phone"
+                        <Controller
                             name="phone"
-                            type="tel"
-                            value={formData.phone}
-                            onChange={onChange}
-                            placeholder="+995..."
+                            control={control}
+                            render={({ field }) => (
+                                <Input
+                                    {...field}
+                                    id="phone"
+                                    type="tel"
+                                    placeholder="+995..."
+                                />
+                            )}
                         />
                     </Col>
 
@@ -164,12 +176,16 @@ function StudentForm({
                             Date of birth
                         </label>
 
-                        <Input
-                            id="dateOfBirth"
+                        <Controller
                             name="dateOfBirth"
-                            type="date"
-                            value={formData.dateOfBirth}
-                            onChange={onChange}
+                            control={control}
+                            render={({ field }) => (
+                                <Input
+                                    {...field}
+                                    id="dateOfBirth"
+                                    type="date"
+                                />
+                            )}
                         />
                     </Col>
 
@@ -181,18 +197,25 @@ function StudentForm({
                             Faculty
                         </label>
 
-                        <Select
-                            id="facultyId"
-                            value={formData.facultyId || undefined}
-                            onChange={handleFacultyChange}
-                            options={facultyOptions}
-                            placeholder="Select faculty"
-                            loading={isFacultiesLoading}
-                            disabled={isFacultiesLoading}
-                            showSearch
-                            optionFilterProp="label"
-                            allowClear
-                            style={{ width: "100%" }}
+                        <Controller
+                            name="facultyId"
+                            control={control}
+                            render={({ field }) => (
+                                <Select
+                                    id="facultyId"
+                                    value={field.value || undefined}
+                                    onChange={field.onChange}
+                                    onBlur={field.onBlur}
+                                    options={facultyOptions}
+                                    placeholder="Select faculty"
+                                    loading={isFacultiesLoading}
+                                    disabled={isFacultiesLoading}
+                                    showSearch
+                                    optionFilterProp="label"
+                                    allowClear
+                                    style={{ width: "100%" }}
+                                />
+                            )}
                         />
                     </Col>
                 </Row>
@@ -202,7 +225,6 @@ function StudentForm({
                         type="primary"
                         htmlType="submit"
                         loading={isSaving}
-                        disabled={!formData.facultyId}
                     >
                         {isEditing
                             ? "Update student"
