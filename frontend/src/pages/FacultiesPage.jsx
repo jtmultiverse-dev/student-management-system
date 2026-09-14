@@ -3,6 +3,7 @@ import { Alert } from "antd";
 
 import FacultyForm from "../components/FacultyForm.jsx";
 import FacultiesList from "../components/FacultiesList.jsx";
+import { facultySchema } from "../validators/faculty.schema.js";
 
 import {
     useGetFacultiesQuery,
@@ -19,6 +20,8 @@ const initialFacultyFormData = {
 function FacultiesPage() {
     const [facultyFormData, setFacultyFormData] =
         useState(initialFacultyFormData);
+
+    const [validationErrors, setValidationErrors] = useState({});
 
     const [editingFacultyId, setEditingFacultyId] =
         useState(null);
@@ -89,10 +92,27 @@ function FacultiesPage() {
             ...previousData,
             [name]: value,
         }));
+
+        setValidationErrors((previousErrors) => ({
+            ...previousErrors,
+            [name]: undefined,
+        }));
     }
 
     async function handleFacultySubmit(event) {
         event.preventDefault();
+
+        const result = facultySchema.safeParse(facultyFormData);
+
+        if (!result.success) {
+            const errors =
+                result.error.flatten().fieldErrors;
+
+            setValidationErrors(errors);
+            return;
+        }
+
+        setValidationErrors({});
 
         try {
             if (editingFacultyId !== null) {
@@ -152,6 +172,7 @@ function FacultiesPage() {
             <FacultyForm
                 formData={facultyFormData}
                 fieldErrors={fieldErrors}
+                validationErrors={validationErrors}
                 isEditing={isEditing}
                 isSaving={isSaving}
                 onChange={handleFacultyChange}

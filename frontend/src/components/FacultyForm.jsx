@@ -16,11 +16,21 @@ const labelStyle = {
 function FacultyForm({
     formData,
     isEditing,
+    fieldErrors,
+    validationErrors,
     isSaving,
     onChange,
     onSubmit,
     onCancelEdit,
 }) {
+    const nameError =
+    validationErrors?.name?.[0] ??
+    fieldErrors?.name?.[0];
+
+const codeError =
+    validationErrors?.code?.[0] ??
+    fieldErrors?.code?.[0];
+    
     return (
         <Card
             title={isEditing ? "Edit faculty" : "Add faculty"}
@@ -44,6 +54,17 @@ function FacultyForm({
                             placeholder="Enter faculty name"
                             required
                         />
+                        {validationErrors?.name?.[0] && (
+                            <div style={{ color: "red", marginTop: 4 }}>
+                                {validationErrors.name[0]}
+                            </div>
+                        )}
+
+                        {nameError && (
+                            <div style={{ color: "red", marginTop: 4 }}>
+                                {nameError}
+                            </div>
+                        )}
                     </Col>
 
                     <Col xs={24} md={12}>
@@ -62,6 +83,16 @@ function FacultyForm({
                             placeholder="Example: IT"
                             required
                         />
+                        {validationErrors?.code?.[0] && (
+                            <div style={{ color: "red", marginTop: 4 }}>
+                                {validationErrors.code[0]}
+                            </div>
+                        )}
+                        {codeError && (
+                            <div style={{ color: "red", marginTop: 4 }}>
+                                {codeError}
+                            </div>
+                        )}
                     </Col>
                 </Row>
 
