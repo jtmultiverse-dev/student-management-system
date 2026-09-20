@@ -9,6 +9,9 @@ import {
 import StudentsList from "../components/StudentsList.jsx";
 import StudentForm from "../components/StudentForm.jsx";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { studentSchema } from "../validators/student.schema.js";
+
 import { useForm } from "react-hook-form";
 
 const initialFormData = {
@@ -31,15 +34,16 @@ function StudentsPage() {
         error,
     } = useGetStudentsQuery();
 
-    const {
-        control,
-        handleSubmit: handleFormSubmit,
-        reset,
-        watch,
-        formState: { errors },
-    } = useForm({
-        defaultValues: initialFormData,
-    });
+const {
+    control,
+    handleSubmit: handleFormSubmit,
+    reset,
+    watch,
+    formState: { errors },
+} = useForm({
+    resolver: zodResolver(studentSchema),
+    defaultValues: initialFormData,
+});
     const [editingStudentId, setEditingStudentId] = useState(null);
 
     const [

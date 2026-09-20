@@ -8,13 +8,31 @@ import {
     Space,
 } from "antd";
 
+import { Controller } from "react-hook-form";
+
 const labelStyle = {
     display: "block",
     marginBottom: 6,
     fontWeight: 500,
 };
 
-import { Controller } from "react-hook-form";
+const errorStyle = {
+    color: "#ff4d4f",
+    fontSize: 13,
+    marginTop: 4,
+};
+
+function FieldError({ error }) {
+    if (!error) {
+        return null;
+    }
+
+    return (
+        <div style={errorStyle}>
+            {error.message}
+        </div>
+    );
+}
 
 function StudentForm({
     control,
@@ -38,6 +56,7 @@ function StudentForm({
         >
             <form onSubmit={onSubmit}>
                 <Row gutter={[16, 16]}>
+                    {/* First name */}
                     <Col xs={24} md={12} xl={8}>
                         <label
                             htmlFor="firstName"
@@ -50,15 +69,27 @@ function StudentForm({
                             name="firstName"
                             control={control}
                             render={({ field }) => (
-                                <Input
-                                    {...field}
-                                    id="firstName"
-                                    placeholder="Enter first name"
-                                />
+                                <>
+                                    <Input
+                                        {...field}
+                                        id="firstName"
+                                        placeholder="Enter first name"
+                                        status={
+                                            errors.firstName
+                                                ? "error"
+                                                : ""
+                                        }
+                                    />
+
+                                    <FieldError
+                                        error={errors.firstName}
+                                    />
+                                </>
                             )}
                         />
                     </Col>
 
+                    {/* Last name */}
                     <Col xs={24} md={12} xl={8}>
                         <label
                             htmlFor="lastName"
@@ -71,15 +102,27 @@ function StudentForm({
                             name="lastName"
                             control={control}
                             render={({ field }) => (
-                                <Input
-                                    {...field}
-                                    id="lastName"
-                                    placeholder="Enter last name"
-                                />
+                                <>
+                                    <Input
+                                        {...field}
+                                        id="lastName"
+                                        placeholder="Enter last name"
+                                        status={
+                                            errors.lastName
+                                                ? "error"
+                                                : ""
+                                        }
+                                    />
+
+                                    <FieldError
+                                        error={errors.lastName}
+                                    />
+                                </>
                             )}
                         />
                     </Col>
 
+                    {/* Email */}
                     <Col xs={24} md={12} xl={8}>
                         <label
                             htmlFor="email"
@@ -92,16 +135,28 @@ function StudentForm({
                             name="email"
                             control={control}
                             render={({ field }) => (
-                                <Input
-                                    {...field}
-                                    id="email"
-                                    type="email"
-                                    placeholder="student@example.com"
-                                />
+                                <>
+                                    <Input
+                                        {...field}
+                                        id="email"
+                                        type="email"
+                                        placeholder="student@example.com"
+                                        status={
+                                            errors.email
+                                                ? "error"
+                                                : ""
+                                        }
+                                    />
+
+                                    <FieldError
+                                        error={errors.email}
+                                    />
+                                </>
                             )}
                         />
                     </Col>
 
+                    {/* Student number */}
                     <Col xs={24} md={12} xl={8}>
                         <label
                             htmlFor="studentNumber"
@@ -114,15 +169,29 @@ function StudentForm({
                             name="studentNumber"
                             control={control}
                             render={({ field }) => (
-                                <Input
-                                    {...field}
-                                    id="studentNumber"
-                                    placeholder="STU-0001"
-                                />
+                                <>
+                                    <Input
+                                        {...field}
+                                        id="studentNumber"
+                                        placeholder="STU-0001"
+                                        status={
+                                            errors.studentNumber
+                                                ? "error"
+                                                : ""
+                                        }
+                                    />
+
+                                    <FieldError
+                                        error={
+                                            errors.studentNumber
+                                        }
+                                    />
+                                </>
                             )}
                         />
                     </Col>
 
+                    {/* Course */}
                     <Col xs={24} md={12} xl={8}>
                         <label
                             htmlFor="course"
@@ -135,17 +204,30 @@ function StudentForm({
                             name="course"
                             control={control}
                             render={({ field }) => (
-                                <Input
-                                    {...field}
-                                    id="course"
-                                    type="number"
-                                    min={1}
-                                    placeholder="Enter course"
-                                />
+                                <>
+                                    <Input
+                                        {...field}
+                                        id="course"
+                                        type="number"
+                                        min={1}
+                                        max={6}
+                                        placeholder="Enter course"
+                                        status={
+                                            errors.course
+                                                ? "error"
+                                                : ""
+                                        }
+                                    />
+
+                                    <FieldError
+                                        error={errors.course}
+                                    />
+                                </>
                             )}
                         />
                     </Col>
 
+                    {/* Phone */}
                     <Col xs={24} md={12} xl={8}>
                         <label
                             htmlFor="phone"
@@ -158,16 +240,28 @@ function StudentForm({
                             name="phone"
                             control={control}
                             render={({ field }) => (
-                                <Input
-                                    {...field}
-                                    id="phone"
-                                    type="tel"
-                                    placeholder="+995..."
-                                />
+                                <>
+                                    <Input
+                                        {...field}
+                                        id="phone"
+                                        type="tel"
+                                        placeholder="+995..."
+                                        status={
+                                            errors.phone
+                                                ? "error"
+                                                : ""
+                                        }
+                                    />
+
+                                    <FieldError
+                                        error={errors.phone}
+                                    />
+                                </>
                             )}
                         />
                     </Col>
 
+                    {/* Date of birth */}
                     <Col xs={24} md={12} xl={8}>
                         <label
                             htmlFor="dateOfBirth"
@@ -180,15 +274,29 @@ function StudentForm({
                             name="dateOfBirth"
                             control={control}
                             render={({ field }) => (
-                                <Input
-                                    {...field}
-                                    id="dateOfBirth"
-                                    type="date"
-                                />
+                                <>
+                                    <Input
+                                        {...field}
+                                        id="dateOfBirth"
+                                        type="date"
+                                        status={
+                                            errors.dateOfBirth
+                                                ? "error"
+                                                : ""
+                                        }
+                                    />
+
+                                    <FieldError
+                                        error={
+                                            errors.dateOfBirth
+                                        }
+                                    />
+                                </>
                             )}
                         />
                     </Col>
 
+                    {/* Faculty */}
                     <Col xs={24} md={12} xl={8}>
                         <label
                             htmlFor="facultyId"
@@ -201,20 +309,46 @@ function StudentForm({
                             name="facultyId"
                             control={control}
                             render={({ field }) => (
-                                <Select
-                                    id="facultyId"
-                                    value={field.value || undefined}
-                                    onChange={field.onChange}
-                                    onBlur={field.onBlur}
-                                    options={facultyOptions}
-                                    placeholder="Select faculty"
-                                    loading={isFacultiesLoading}
-                                    disabled={isFacultiesLoading}
-                                    showSearch
-                                    optionFilterProp="label"
-                                    allowClear
-                                    style={{ width: "100%" }}
-                                />
+                                <>
+                                    <Select
+                                        id="facultyId"
+                                        value={
+                                            field.value ||
+                                            undefined
+                                        }
+                                        onChange={
+                                            field.onChange
+                                        }
+                                        onBlur={field.onBlur}
+                                        options={
+                                            facultyOptions
+                                        }
+                                        placeholder="Select faculty"
+                                        loading={
+                                            isFacultiesLoading
+                                        }
+                                        disabled={
+                                            isFacultiesLoading
+                                        }
+                                        showSearch
+                                        optionFilterProp="label"
+                                        allowClear
+                                        status={
+                                            errors.facultyId
+                                                ? "error"
+                                                : ""
+                                        }
+                                        style={{
+                                            width: "100%",
+                                        }}
+                                    />
+
+                                    <FieldError
+                                        error={
+                                            errors.facultyId
+                                        }
+                                    />
+                                </>
                             )}
                         />
                     </Col>
