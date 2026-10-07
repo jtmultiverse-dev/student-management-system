@@ -49,6 +49,13 @@ export async function getStudentByIdController(req, res) {
     try {
         const { id } = req.validatedParams;
         const student = await getStudentById(id)
+
+        if (!student) {
+            return res.status(404).json({
+                message: "Student not found",
+            });
+        }
+
         return res.status(200).json({
             data: student,
         });
