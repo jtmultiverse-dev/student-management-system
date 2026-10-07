@@ -52,13 +52,13 @@ function AdminLayout({ children }) {
                 style={{backgroundColor: "#ffff"}}
                 trigger={null}
                 collapsible
-                collapsed={collapsed}            >
+                collapsed={collapsed}>
                 <div
                     style={{
                         height: 64,
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "center",
+                        justifyContent: "center",   
                         color: "#020000",
                         backgroundColor: "#ffffff",
                         fontSize: collapsed ? 18 : 20,
