@@ -92,12 +92,6 @@ export async function deleteStudentController(req, res) {
             });
         }
 
-        if (error.code === "P2003") {
-            return res.status(409).json({
-                message: "Cannot delete faculty because it has students",
-            });
-        }
-
         return res.status(500).json({
             message: "Failed to delete student",
         });
