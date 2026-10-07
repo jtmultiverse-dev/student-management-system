@@ -11,6 +11,12 @@ export async function createFacultyController(req, res) {
     } catch (error) {
         console.log(error);
 
+        if (error.code === "P2002") {
+            return res.status(409).json({
+                message: "Faculty code already exists",
+            });
+        }
+
         return res.status(500).json({
             message: "Failed to create faculty",
         });

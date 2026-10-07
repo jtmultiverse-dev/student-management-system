@@ -11,6 +11,18 @@ export async function createStudentController(req, res) {
     } catch (error) {
         console.error(error);
 
+        if (error.code === "P2002") {
+            return res.status(409).json({
+                message: "Student already exists",
+            });
+        }
+
+        if (error.code === "P2003") {
+            return res.status(404).json({
+                message: "Faculty not found",
+            });
+        }
+
         return res.status(500).json({
             message: "Failed to create student",
         });
@@ -65,6 +77,18 @@ export async function updateStudentController(req, res) {
         if (error.code === "P2025") {
             return res.status(404).json({
                 message: "Student not found",
+            });
+        }
+
+        if (error.code === "P2002") {
+            return res.status(409).json({
+                message: "Student already exists",
+            });
+        }
+
+        if (error.code === "P2003") {
+            return res.status(404).json({
+                message: "Faculty not found",
             });
         }
 
