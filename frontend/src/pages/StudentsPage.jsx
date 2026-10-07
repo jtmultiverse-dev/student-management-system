@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Alert } from "antd";
 import {
     useGetStudentsQuery,
     useGetFacultiesQuery,
@@ -25,6 +26,13 @@ const initialFormData = {
     facultyId: "",
 };
 
+// 404 can also mean "Student not found", so the message must be checked too.
+function isFacultyNotFoundError(error) {
+    return (
+        error?.status === 404 &&
+        error?.data?.message === "Faculty not found"
+    );
+}
 
 function StudentsPage() {
     const {
@@ -38,6 +46,7 @@ const {
     control,
     handleSubmit: handleFormSubmit,
     reset,
+    setError,
     watch,
     formState: { errors },
 } = useForm({
@@ -99,6 +108,13 @@ const {
             reset(initialFormData);
         } catch (error) {
             console.error("Failed to save student:", error);
+
+            if (isFacultyNotFoundError(error)) {
+                setError("facultyId", {
+                    type: "server",
+                    message: error.data.message,
+                });
+            }
         }
     }
 
@@ -156,7 +172,16 @@ const {
     }
 
     if (isError) {
-        return <p>Error: {JSON.stringify(error)}</p>;
+        return (
+            <Alert
+                type="error"
+                message={
+                    error?.data?.message ??
+                    "Failed to load students"
+                }
+                showIcon
+            />
+        );
     }
 
     const students = response?.data ?? [];
@@ -180,29 +205,47 @@ const {
             />
 
             {isFacultiesError && (
-                <p>
-                    Failed to load faculties: {JSON.stringify(facultiesError)}
-                </p>
+                <Alert
+                    type="error"
+                    message={
+                        facultiesError?.data?.message ??
+                        "Failed to load faculties"
+                    }
+                    showIcon
+                    style={{ marginBottom: 24 }}
+                />
             )}
 
             {isCreateSuccess && (
                 <p>Student created successfully.</p>
             )}
 
-            {isCreateError && (
-                <p>
-                    Create error: {JSON.stringify(createError)}
-                </p>
+            {isCreateError && !isFacultyNotFoundError(createError) && (
+                <Alert
+                    type="error"
+                    message={
+                        createError?.data?.message ??
+                        "Failed to create student"
+                    }
+                    showIcon
+                    style={{ marginBottom: 24 }}
+                />
             )}
 
             {isUpdateSuccess && (
                 <p>Student updated successfully.</p>
             )}
 
-            {isUpdateError && (
-                <p>
-                    Update error: {JSON.stringify(updateError)}
-                </p>
+            {isUpdateError && !isFacultyNotFoundError(updateError) && (
+                <Alert
+                    type="error"
+                    message={
+                        updateError?.data?.message ??
+                        "Failed to update student"
+                    }
+                    showIcon
+                    style={{ marginBottom: 24 }}
+                />
             )}
 
             {isDeleteSuccess && (
@@ -210,9 +253,15 @@ const {
             )}
 
             {isDeleteError && (
-                <p>
-                    Delete error: {JSON.stringify(deleteError)}
-                </p>
+                <Alert
+                    type="error"
+                    message={
+                        deleteError?.data?.message ??
+                        "Failed to delete student"
+                    }
+                    showIcon
+                    style={{ marginBottom: 24 }}
+                />
             )}
 
             <StudentsList
